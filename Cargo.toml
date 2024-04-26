@@ -1,0 +1,5 @@
+[package]
+name = "split-and-fold-dp"
+version = "0.1.0"
+edition = "2021"
+
