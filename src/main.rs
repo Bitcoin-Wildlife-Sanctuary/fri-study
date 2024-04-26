@@ -89,8 +89,8 @@ pub fn dp(is_nonstandard: bool, goal_func: fn(usize, usize) -> usize) -> Result 
 }
 
 fn main() {
-    let res = dp(true, |a, b| b);
-    // start with a goal function that optimizes only for qm31 mul
+    let res = dp(true, |a, _b| a);
+    // start with a goal function that optimizes only for stack usage
 
     for i in (0..res.0.len()).rev() {
         let mut optimal_route = format!("{}", i);
