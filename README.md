@@ -22,6 +22,25 @@ to go down $2^k$ in the degree and one can then check if the polynomial is of a 
 
 $$\frac{a(X) - y}{X - \beta}$$
 
-is a low degree polynomial. In fact, its degree should be the degree of $a(X)$ minus one. If $a(\beta) \not= y$
+is a low degree polynomial. In fact, its degree should be the degree of $a(X)$ minus one. If $a(\beta) \not= y$, this 
+polynomial would not be a low-degree polynomial. 
+
+### Why is there a strategy?
+
+There are several ways to do split-and-fold, and these methods have different costs when it comes to the number of witness 
+stack it uses and the number of weight units it contributes.
+
+- **Split-and-fold one by one (default):** The split-and-fold is exactly as the one shown above. It requires 2 hint elements for 
+deriving $\alpha$, 1 hint element for the sibling (per query point), and log(n/2) hint elements (depending on the Merkle tree arity) for Merkle 
+tree (per query point). At the same time, it needs to perform one qm31 multiplication (between $\alpha$ and $h(X)$) on the queried point. 
+
+$$f(X) = g(X^2) + X \cdot h(X^2)$$
+
+- **Split-and-fold two by two:** It now performs two split-and-fold using the same $\alpha$. This is by splitting the 
+polynomial $f(X)$ into four, say $g_1(X), g_2(X), g_3(X), g_4(X)$:
+
+$$f(X) = g_1(X^4) + X\cdot g_2(X^4) + X^2 \cdot g_3(X^4) + X^4 \cdot g_4(X^4)$$
+
+
 
 ### Other strategies to control the number of hints and the number of 
