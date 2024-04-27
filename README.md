@@ -30,17 +30,26 @@ polynomial would not be a low-degree polynomial.
 There are several ways to do split-and-fold, and these methods have different costs when it comes to the number of witness 
 stack it uses and the number of weight units it contributes.
 
-- **Split-and-fold one by one (default):** The split-and-fold is exactly as the one shown above. It requires 2 hint elements for 
+- **Standard split-and-fold:** The split-and-fold is exactly as the one shown above. It requires 2 hint elements for 
 deriving $\alpha$, 1 hint element for the sibling (per query point), and log(n/2) hint elements (depending on the Merkle tree arity) for Merkle 
 tree (per query point). At the same time, it needs to perform one qm31 multiplication (between $\alpha$ and $h(X)$) on the queried point. 
 
 $$f(X) = g(X^2) + X \cdot h(X^2)$$
 
-- **Split-and-fold two by two:** It now performs two split-and-fold using the same $\alpha$. This is by splitting the 
+- **Double split-and-fold:** It now performs two split-and-fold using the same $\alpha$. This is by splitting the 
 polynomial $f(X)$ into four, say $g_1(X), g_2(X), g_3(X), g_4(X)$:
 
-$$f(X) = g_1(X^4) + X\cdot g_2(X^4) + X^2 \cdot g_3(X^4) + X^4 \cdot g_4(X^4)$$
+$$f(X) = g_1(X^4) + X\cdot g_2(X^4) + X^2 \cdot g_3(X^4) + X^3 \cdot g_4(X^4)$$
 
+One can see that the four polynomials here, $g_1(X), g_2(X), g_3(X), g_4(X)$, are of degree one quarter. This requires 2 
+hint elements for deriving $\alpha$, 7 hint elements for the sibling (per query point), and $log(n/4)$ hint elements for 
+Merkle tree (per query point). At the same time, it needs to perform 7 qm31 multiplications per query point. Although 
+such a two-time split-and-fold is much more expensive, one needs to know that the total number of split-and-fold is also lower, 
+and sometimes this can end up being more beneficial.
 
+- **Triple split-and-fold:** Similarly, one can perform three split-and-fold using the same $\alpha$. Here, the polynomial 
+$f(X)$ is being split into 8 polynomials, $g_1(X), g_2(X), g_3(X), g_4(X), g_5(X), g_6(X), g_7(X), g_8(X)$:
+
+$$f(X) = g_1(X^8) + X\cdot g_2(X^8) + $$
 
 ### Other strategies to control the number of hints and the number of 
