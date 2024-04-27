@@ -39,9 +39,9 @@ $$f(X) = g(X^2) + X \cdot h(X^2)$$
 - **Double split-and-fold:** It now performs two split-and-fold using the same $\alpha$. This is by splitting the 
 polynomial $f(X)$ into four, say $g_1(X), g_2(X), g_3(X), g_4(X)$:
 
-$$f(X) = g_1(X^4) + X\cdot g_2(X^4) + X^2 \cdot g_3(X^4) + X^3 \cdot g_4(X^4)$$
+   $$f(X) = g_1(X^4) + X\cdot g_2(X^4) + X^2 \cdot g_3(X^4) + X^3 \cdot g_4(X^4)$$ 
 
-One can see that the four polynomials here, $g_1(X), g_2(X), g_3(X), g_4(X)$, are of degree one quarter. This requires 2 
+   One can see that the four polynomials here, $g_1(X), g_2(X), g_3(X), g_4(X)$, are of degree one quarter. This requires 2 
 hint elements for deriving $\alpha$, 7 hint elements for the sibling (per query point), and $log(n/4)$ hint elements for 
 Merkle tree (per query point). At the same time, it needs to perform 7 qm31 multiplications per query point. Although 
 such a two-time split-and-fold is much more expensive, one needs to know that the total number of split-and-fold is also lower, 
