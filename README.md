@@ -42,14 +42,29 @@ polynomial $f(X)$ into four, say $g_1(X), g_2(X), g_3(X), g_4(X)$:
    $$f(X) = g_1(X^4) + X\cdot g_2(X^4) + X^2 \cdot g_3(X^4) + X^3 \cdot g_4(X^4)$$ 
 
    One can see that the four polynomials here, $g_1(X), g_2(X), g_3(X), g_4(X)$, are of degree one quarter. This requires 2 
-hint elements for deriving $\alpha$, 7 hint elements for the sibling (per query point), and $log(n/4)$ hint elements for 
-Merkle tree (per query point). At the same time, it needs to perform 7 qm31 multiplications per query point. Although 
-such a two-time split-and-fold is much more expensive, one needs to know that the total number of split-and-fold is also lower, 
-and sometimes this can end up being more beneficial.
+hint elements for deriving $\alpha$, 3 hint elements for the siblings (per query point), and $log(n/4)$ hint elements for 
+Merkle tree (per query point). At the same time, it needs to perform 3 qm31 multiplications per query point and one qm31 
+multiplication to compute $\alpha^2$ from $\alpha$. Although such a two-time split-and-fold is much more expensive, one 
+needs to know that the total number of split-and-fold is also lower, and sometimes this can end up being more beneficial.
 
 - **Triple split-and-fold:** Similarly, one can perform three split-and-fold using the same $\alpha$. Here, the polynomial 
 $f(X)$ is being split into 8 polynomials, $g_1(X), g_2(X), g_3(X), g_4(X), g_5(X), g_6(X), g_7(X), g_8(X)$:
 
-$$f(X) = g_1(X^8) + X\cdot g_2(X^8) + $$
+  $$f(X) = g_1(X^8) + X\cdot g_2(X^8) + X^2\cdot g_3(X^8) + X^3 \cdot g_4(X^8) + X^4 \cdot g_5(X^8) + X^5 \cdot g_6(X^8) + X^6\cdot g_7(X^8) + X^7\cdot g_8(X^8)$$
+
+  Here, it requires 2 hint elements for deriving $\alpha$, 7 hint elements for the siblings (per query point), and $log(n/8)$
+hint elements for Merkle tree (per query point). At the same time, it needs to perform 7 qm31 multiplications per query 
+point in addition to 2 qm31 multiplications to compute $\alpha^2$ and $\alpha^4$ from $\alpha$. This can reduce the total 
+number of split-and-fold further, but at the cost of more computation.
+
+- **Quadruple split-and-fold:** There is some situation where the DP algorithm will suggest a more aggressive version, which 
+splits the polynomial $f(X)$ into 16 polynomials $g_1(X), g_2(X), ..., g_{16}(X)$.
+
+   $$f(X) = \sum_{i=1}^{16} X^{i-1} g_{i}(X)$$
+
+   This still requires 2 hint elements for deriving $\alpha$, 15 hint elements for the siblings (per query point), and 
+   $log(n/16)$ hint elements for Merkle tree (per query point). Regarding the number of qm31 multiplications, 
+   there are 15 qm31 multiplications per query point in addition to 3 qm31 multiplications to compute $\alpha^2$, $\alpha^4$,
+   and $\alpha^8$. This is a more extreme direction of the input stack size vs the qm31 multiplication tradeoff.
 
 ### Other strategies to control the number of hints and the number of 
