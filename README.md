@@ -50,7 +50,7 @@ needs to know that the total number of split-and-fold is also lower, and sometim
 - **Triple split-and-fold:** Similarly, one can perform three split-and-fold using the same $\alpha$. Here, the polynomial 
 $f(X)$ is being split into 8 polynomials, $g_1(X), g_2(X), g_3(X), g_4(X), g_5(X), g_6(X), g_7(X), g_8(X)$:
 
-  $$f(X) = g_1(X^8) + X\cdot g_2(X^8) + X^2\cdot g_3(X^8) + X^3 \cdot g_4(X^8) + X^4 \cdot g_5(X^8) + X^5 \cdot g_6(X^8) + X^6\cdot g_7(X^8) + X^7\cdot g_8(X^8)$$
+  $$f(X) = \sum_{i=1}^8 X^{i-1}^\cdot g_{i}(X^8)$$
 
   Here, it requires 2 hint elements for deriving $\alpha$, 7 hint elements for the siblings (per query point), and $log(n/8)$
 hint elements for Merkle tree (per query point). At the same time, it needs to perform 7 qm31 multiplications per query 
@@ -60,7 +60,7 @@ number of split-and-fold further, but at the cost of more computation.
 - **Quadruple split-and-fold:** There is some situation where the DP algorithm will suggest a more aggressive version, which 
 splits the polynomial $f(X)$ into 16 polynomials $g_1(X), g_2(X), ..., g_{16}(X)$.
 
-   $$f(X) = \sum_{i=1}^{16} X^{i-1} g_{i}(X)$$
+   $$f(X) = \sum_{i=1}^{16} X^{i-1} g_{i}(X^16)$$
 
    This still requires 2 hint elements for deriving $\alpha$, 15 hint elements for the siblings (per query point), and 
    $log(n/16)$ hint elements for Merkle tree (per query point). Regarding the number of qm31 multiplications, 
