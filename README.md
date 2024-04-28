@@ -67,4 +67,18 @@ splits the polynomial $f(X)$ into 16 polynomials $g_1(X), g_2(X), ..., g_{16}(X)
    there are 15 qm31 multiplications per query point in addition to 3 qm31 multiplications to compute $\alpha^2$, $\alpha^4$,
    and $\alpha^8$. This is a more extreme direction of the input stack size vs the qm31 multiplication tradeoff.
 
+### What about the cost of Merkle tree?
+
+There is a lot of flexibility in Merkle tree. Here we present a few talking points.
+
+**Arity.** If we assume the standard relay policy that limits the hint element to be no more than 80 bytes, 
+then we can use a binary tree or a 3-ary tree. There is, however, no benefit in terms of the number of hint elements 
+to use a 3-ary tree. The binary tree uses 1 hint element for sibling, and the 3-ary tree uses 2 hint elements for sibling. 
+This is not better than doing the binary tree twice.
+
+However, if we forgo the standard relay policy, 
+
+
+## 
+
 ### Other strategies to control the number of hints and the number of 

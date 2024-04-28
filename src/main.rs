@@ -128,7 +128,7 @@ pub fn dp<C: DPConfig>(map: Rc<RefCell<Result>>, idx: ResultIndex) -> Option<Res
 fn main() {
     pub struct Config;
     impl DPConfig for Config {
-        const IS_NONSTANDARD: bool = true;
+        const IS_NONSTANDARD: bool = false;
 
         fn goal_func(_a: usize, b: usize) -> usize {
             b
@@ -138,8 +138,8 @@ fn main() {
     let map = Rc::new(RefCell::new(Result(HashMap::new())));
 
     let idx = ResultIndex {
-        remaining_levels: 28,
-        remaining_hint_limit: 700,
+        remaining_levels: 26,
+        remaining_hint_limit: 1000,
         remaining_qm31_mul_limit: 250,
     };
 
