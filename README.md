@@ -150,6 +150,9 @@ This can even go to 600 with a route (3x2, 2x2, 3, 2x4, 1, 2):
 > 
 > Route: 26 => 23 => 20 => 18 => 16 => 13 => 11 => 9 => 7 => 5 => 4 => 2
 
+But, of course, there is a lower bound. We find that there is no strategy is use fewer than 575 hint elements, even if 
+it uses a lot of qm31 multiplications.
+
 ## License 
 
 This repository is intended to be public good. It is under the MIT license.

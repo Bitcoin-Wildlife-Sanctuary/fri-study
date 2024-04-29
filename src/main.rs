@@ -139,8 +139,8 @@ fn main() {
 
     let idx = ResultIndex {
         remaining_levels: 26,
-        remaining_hint_limit: 600,
-        remaining_qm31_mul_limit: 250,
+        remaining_hint_limit: 575,
+        remaining_qm31_mul_limit: 800,
     };
 
     let res = dp::<Config>(map.clone(), idx);
