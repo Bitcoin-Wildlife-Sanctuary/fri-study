@@ -73,12 +73,53 @@ There is a lot of flexibility in Merkle tree. Here we present a few talking poin
 
 **Arity.** If we assume the standard relay policy that limits the hint element to be no more than 80 bytes, 
 then we can use a binary tree or a 3-ary tree. There is, however, no benefit in terms of the number of hint elements 
-to use a 3-ary tree. The binary tree uses 1 hint element for sibling, and the 3-ary tree uses 2 hint elements for sibling. 
+to use a 3-ary tree. The binary tree uses 1 hint element for sibling, and the 3-ary tree uses 2 hint elements for siblings. 
 This is not better than doing the binary tree twice.
 
-However, if we forgo the standard relay policy, 
+However, if we forgo the standard relay policy, the current upper bound for OP_CAT output is 520 bytes, which allows us 
+to squeeze in 16 hashes. This allows us to do a 16-ary tree, and for each level, we use 2 hint elements for siblings. This 
+can roughly reduce the number of hint elements used in Merkle tree by half. This is an example where the transaction being 
+nonstandard (in respect to the relay policy) can bring actual benefits.
 
+**Tree-top optimization.** Sometimes, it is useful to remove the top parts of the Merkle tree, so that the new root is no 
+longer a single element, but $2^l$ elements. When we verify the Merkle tree path, we check against one of the $2^l$ elements. 
+This approach is useful if a single Merkle tree is queried for many times and for a binary Merkle tree. For a binary Merkle 
+tree of size 20, setting $l = 4$ meaning that the new root is of 16 elements (15 more elements than the old root). This 
+allows the 5 queries to the Merkle tree to reduce 4 levels, resulting in the save of 4 hint elements each and 20 hint elements 
+in total. However, one can see that if we only have 5 queries, doing so may be unnecessary.
 
-## 
+The benefit seems to completely disappear when we are using nonstandard transaction, since with a 16-ary tree, any tree-top 
+optimization seems not better than using just one more layer in the 16-ary tree. For the reasons discussed here, this DP
+algorithm does not consider tree-top optimization.
+
+### Dynamic Programming (DP)
+
+The code in the repository wants to do the following:
+
+- Given a limit of the hint elements $N_{h}$ and a limit of qm31 multiplications $N_{m}$,
+- Given a **linear** goal functon, such as $g(h, m) = h$ (if we solely want to optimize for fewer hint elements), or $g(h, m) = m$
+  (if we solely want to optimize for fewer qm31 multiplications),
+- Find the reduction strategy (which is a reduction path from $n$ to $1$, with the freedom of choosing one of the split-and-fold 
+  methods for each step of the reduction) that stays within the limits $N_{h}$ and $N_{m}$ and **minimizes** the goal function.
+
+This is done as follows:
+
+- Start with the main problem $(n, N_{h}, N_{m})$.
+- Try all the reduction strategies and reduce the current problem to a subproblem. For example, if applying a reduction 
+  strategy that lowers $t$ layers at the cost of $a$ hint elements and $b$ qm31 multiplications incurring a cost of $g(a, b)$, 
+  we figure out the cost of the subproblem $(n - t, N_{h} - a, N_{m} - b)$ in a similar way, add this reduction's cost 
+  $g(a, b)$, and pick the one with the **lowest** cost (i.e., minimizing the goal function).
+
+This can be expressed as follows.
+
+$$G(n, N_{h}, N_{m}) = min(g_1, g_2, g_3, g_4)$$
+
+$$g_1 = G(n - 1, N_{h} - 2 - (1 + log(n/2))\cdot q, N_{m} - q) + g(2 + (1 + log(n/2))\cdot q, q)$$
+
+$$g_2 = G(n - 2, N_{h} - 2 - (3 + log(n/4))\cdot q, N_{m} - 3\cdot q - 1) + g(2 + (3 + log(n/4))\cdot q, 3\cdot q + 1)$$
+
+$$g_3 = G(n - 3, N_{h} - 2 - (7 + log(n/8))\cdot q, N_{m} - 7\cdot q - 2) + g(2 + (7 + log(n/8))\cdot q, 7\cdot q + 2)$$
+
+$$g_4 = G(n - 4, N_{h} - 2 - (15 + log(n/16))\cdot q, N_{m} - 15\cdot q - 3) + g(2 + (15 + log(n/16))\cdot q, 15\cdot q + 3)$$
 
 ### Other strategies to control the number of hints and the number of 
