@@ -114,12 +114,12 @@ This can be expressed as follows.
 
 $$G(n, N_{h}, N_{m}) = min(g_1, g_2, g_3, g_4)$$
 
-$$g_1 = G(n - 1, N_{h} - 2 - (1 + log(n/2))\cdot q, N_{m} - q) + g(2 + (1 + log(n/2))\cdot q, q)$$
+- $g_1 = G(n - 1, N_{h} - 2 - (1 + log(n/2))\cdot q, N_{m} - q) + g(2 + (1 + log(n/2))\cdot q, q)$
+- $g_2 = G(n - 2, N_{h} - 2 - (3 + log(n/4))\cdot q, N_{m} - 3\cdot q - 1) + g(2 + (3 + log(n/4))\cdot q, 3\cdot q + 1)$
+- $g_3 = G(n - 3, N_{h} - 2 - (7 + log(n/8))\cdot q, N_{m} - 7\cdot q - 2) + g(2 + (7 + log(n/8))\cdot q, 7\cdot q + 2)$
+- $g_4 = G(n - 4, N_{h} - 2 - (15 + log(n/16))\cdot q, N_{m} - 15\cdot q - 3) + g(2 + (15 + log(n/16))\cdot q, 15\cdot q + 3)$
 
-$$g_2 = G(n - 2, N_{h} - 2 - (3 + log(n/4))\cdot q, N_{m} - 3\cdot q - 1) + g(2 + (3 + log(n/4))\cdot q, 3\cdot q + 1)$$
-
-$$g_3 = G(n - 3, N_{h} - 2 - (7 + log(n/8))\cdot q, N_{m} - 7\cdot q - 2) + g(2 + (7 + log(n/8))\cdot q, 7\cdot q + 2)$$
-
-$$g_4 = G(n - 4, N_{h} - 2 - (15 + log(n/16))\cdot q, N_{m} - 15\cdot q - 3) + g(2 + (15 + log(n/16))\cdot q, 15\cdot q + 3)$$
+with $G(\cdot, x, y) = +\infty$ if $x < 0$ or $y < 0$ and $G(0, x, y) = 0$ for $x \geq 0$ or $y \geq 0$ to make sure that 
+the limits are observed and the algorithm terminates, respectively.
 
 ### Other strategies to control the number of hints and the number of 
