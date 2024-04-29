@@ -128,10 +128,10 @@ pub fn dp<C: DPConfig>(map: Rc<RefCell<Result>>, idx: ResultIndex) -> Option<Res
 fn main() {
     pub struct Config;
     impl DPConfig for Config {
-        const IS_NONSTANDARD: bool = false;
+        const IS_NONSTANDARD: bool = true;
 
-        fn goal_func(_a: usize, b: usize) -> usize {
-            b
+        fn goal_func(a: usize, _b: usize) -> usize {
+            a
         }
     }
 

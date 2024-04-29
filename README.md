@@ -34,7 +34,7 @@ stack it uses and the number of weight units it contributes.
 deriving $\alpha$, 1 hint element for the sibling (per query point), and log(n/2) hint elements (depending on the Merkle tree arity) for Merkle 
 tree (per query point). At the same time, it needs to perform one qm31 multiplication (between $\alpha$ and $h(X)$) on the queried point. 
 
-$$f(X) = g(X^2) + X \cdot h(X^2)$$
+   $$f(X) = g(X^2) + X \cdot h(X^2)$$
 
 - **Double split-and-fold:** It now performs two split-and-fold using the same $\alpha$. This is by splitting the 
 polynomial $f(X)$ into four, say $g_1(X), g_2(X), g_3(X), g_4(X)$:
@@ -119,7 +119,17 @@ $$G(n, N_{h}, N_{m}) = min(g_1, g_2, g_3, g_4)$$
 - $g_3 = G(n - 3, N_{h} - 2 - (7 + log(n/8))\cdot q, N_{m} - 7\cdot q - 2) + g(2 + (7 + log(n/8))\cdot q, 7\cdot q + 2)$
 - $g_4 = G(n - 4, N_{h} - 2 - (15 + log(n/16))\cdot q, N_{m} - 15\cdot q - 3) + g(2 + (15 + log(n/16))\cdot q, 15\cdot q + 3)$
 
-with $G(\cdot, x, y) = +\infty$ if $x < 0$ or $y < 0$ and $G(0, x, y) = 0$ for $x \geq 0$ or $y \geq 0$ to make sure that 
-the limits are observed and the algorithm terminates, respectively.
+with the following to make sure that the limits are observed and the algorithm terminates, respectively.
+- $G(\cdot, x, y) = +\infty$ if $x < 0$ or $y < 0$
+- $G(0, x, y) = 0$ for $x \geq 0$ and $y \geq 0$ 
 
-### Other strategies to control the number of hints and the number of 
+**How to compute.** We use the standard dynamic programming (DP) method to figure out the minimal cost and the corresponding
+strategy. This is in essence a depth-first search (DFS) with memoization (aka the top-down approach). Since every step 
+it is guaranteed to at least go down one level, the depth is at most $log_{2} (n)$, and it does not seem special programming 
+trick to avoid stack overflow.
+
+## License 
+
+This repository is intended to be public good. It is under the MIT license.
+
+The flexibility and usage of different split-and-fold strategies come from a discussion with Shahar Papini from Starkware.
