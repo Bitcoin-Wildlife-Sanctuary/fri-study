@@ -130,8 +130,8 @@ fn main() {
     impl DPConfig for Config {
         const IS_NONSTANDARD: bool = true;
 
-        fn goal_func(a: usize, _b: usize) -> usize {
-            a
+        fn goal_func(_a: usize, b: usize) -> usize {
+            b
         }
     }
 
@@ -139,7 +139,7 @@ fn main() {
 
     let idx = ResultIndex {
         remaining_levels: 26,
-        remaining_hint_limit: 1000,
+        remaining_hint_limit: 600,
         remaining_qm31_mul_limit: 250,
     };
 

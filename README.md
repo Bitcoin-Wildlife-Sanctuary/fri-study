@@ -128,6 +128,28 @@ strategy. This is in essence a depth-first search (DFS) with memoization (aka th
 it is guaranteed to at least go down one level, the depth is at most $log_{2} (n)$, and it does not seem special programming 
 trick to avoid stack overflow.
 
+## Example Results
+
+Assuming nonstandard transactions, limiting the number of hint elements to 800, to split-and-fold a polynomial of size 2^26,
+it needs 166 qm31 multiplications. The route is (1x2, 2x4, 1, 2, 1x2, 2, 1x8):
+
+> Layer 26: cost = 166, num_hints = 800, num_qm31_mul = 166
+> 
+> Route: 26 => 25 => 24 => 22 => 20 => 18 => 16 => 15 => 13 => 12 => 11 => 9 => 8 => 7 => 6 => 5 => 4 => 3 => 2 => 1
+
+If we restrict the number of hint elements further to 700, the algorithm can present a new route (2x3, 1, 2x5, 1x2, 2, 1x4), 
+as follows:
+
+> Layer 26: cost = 184, num_hints = 699, num_qm31_mul = 184
+> 
+> Route: 26 => 24 => 22 => 20 => 19 => 17 => 15 => 13 => 11 => 9 => 8 => 7 => 5 => 4 => 3 => 2 => 1
+
+This can even go to 600 with a route (3x2, 2x2, 3, 2x4, 1, 2):
+
+> Layer 26: cost = 244, num_hints = 599, num_qm31_mul = 244
+> 
+> Route: 26 => 23 => 20 => 18 => 16 => 13 => 11 => 9 => 7 => 5 => 4 => 2
+
 ## License 
 
 This repository is intended to be public good. It is under the MIT license.
